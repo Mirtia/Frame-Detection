@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17.0)
-project(border VERSION 0.0.0)
+project(cropper VERSION 0.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -10,6 +10,6 @@ message(STATUS "--libraries: ${OpenCV_LIBS}")
 message(STATUS "--include path: ${OpenCV_INCLUDE_DIRS}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(${PROJECT_NAME} main.cpp border.hpp border.cpp)
+add_executable(${PROJECT_NAME} main.cpp cropper.hpp cropper.cpp)
 
-target_link_libraries(border ${OpenCV_LIBS})
+target_link_libraries(cropper ${OpenCV_LIBS})

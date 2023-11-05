@@ -1,8 +1,8 @@
-#include "border.hpp"
+#include "cropper.hpp"
 
 void Cropper::crop(const cv::Mat &src_image, cv::Mat &dst_image)
 {
-    // Morphological operations before blurring 
+    // Morphological operations before blurring
     // (good for object segmentation, boundary extraction, filling gaps)
     cv::Mat grayscaled_image;
     cv::Mat dilated_image;
@@ -74,7 +74,7 @@ void Cropper::crop(const cv::Mat &src_image, cv::Mat &dst_image)
 
     // Now select the largest contour that is not more than 85% of the image size
     // Order by largest to smallest
-    // Is this needed?
+
     sort(rectangle_contours.begin(), rectangle_contours.end(),
          [](const std::vector<cv::Point> &contour_1, const std::vector<cv::Point> &contour_2)
          {
@@ -115,7 +115,6 @@ bool Cropper::is_angle_right(const cv::Point &A, const cv::Point &B, const cv::P
     double magnitude_BC = std::sqrt(BC.x * BC.x + BC.y * BC.y);
 
     double cosine_angle = dot_product / (magnitude_AB * magnitude_BC);
-
     double angle = std::acos(cosine_angle) * 180.0 / CV_PI;
 
     return std::abs(90.0 - angle) <= tolerance;
@@ -126,7 +125,7 @@ void Cropper::erode(const cv::Mat &src_image, cv::Mat &dst_image, int intensity)
     if (src_image.empty())
     {
         std::cerr << "Error: Image is empty!" << std::endl;
-        return;
+        exit(EXIT_FAILURE);
     }
     cv::Mat structuring_element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2 * intensity + 1, 2 * intensity + 1), cv::Point(intensity, intensity));
     cv::erode(src_image, dst_image, structuring_element);
@@ -137,7 +136,7 @@ void Cropper::dilate(const cv::Mat &src_image, cv::Mat &dst_image, int intensity
     if (src_image.empty())
     {
         std::cerr << "Error: Image is empty!" << std::endl;
-        return;
+        exit(EXIT_FAILURE);
     }
     cv::Mat structuring_element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2 * intensity + 1, 2 * intensity + 1), cv::Point(intensity, intensity));
     cv::dilate(src_image, dst_image, structuring_element);
@@ -150,7 +149,7 @@ std::vector<cv::Point> Cropper::get_contour(const cv::Mat &image)
     if (image.empty())
     {
         std::cerr << "Error: Image is empty!" << std::endl;
-        return contour;
+        exit(EXIT_FAILURE);
     }
 
     contour.push_back(cv::Point(0, 0));
